@@ -1,0 +1,11 @@
+{ 
+  "$meta": "This file configures the plot device.",
+  "projectName": "app",
+  "port": {
+    "web": {
+      "$filter": "env",
+      "test": 9090,
+      "$default": 8000
+    }
+  }
+}

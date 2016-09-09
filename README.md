@@ -10,7 +10,6 @@ npm install -g generator-hapi-style
 yo hapi-style:app app
 cd app
 npm install
-npm test
 ```
 
 ## Electrode Confippet
@@ -21,7 +20,14 @@ npm install electrode-confippet --save
 ```
 
 ### Config Files
-- Once the scaffolding is complete, open the following config files: 
+- Create the config folder: 
+
+```
+mkdir config
+cd config
+```
+
+- Add the following config files: 
 
 ```
 config
@@ -30,66 +36,62 @@ config
 |_ production.json
 ```
 
-### Development Environment
-- Update the `config/development.json` to have the following settings: 
+- Add your configuration settings 
+- Update the `config/default.json` to have the following settings: 
 
 ```
-{
-  "server": {
-    "connections": {
-      "compression": false
-    },
-    "debug": {
-      "log": ["error"],
-      "request": ["error"]
-    }
-  },
-  "connections": {
-    "default": {
-      "port": 3000
+{ 
+  "$meta": "This file configures the plot device.",
+  "projectName": "app",
+  "port": {
+    "web": {
+      "$filter": "env",
+      "test": 9090,
+      "$default": 8080
     }
   }
 }
 ```
 
-- The above settings should show server log errors that may be beneficial for debugging, disable content encoding, and run the server in port 3000
+### Development Environment
+- Update the `config/development.json` to have the following settings: 
+
+```
+{ 
+  "port": {
+    "web": {
+      "$default": 4000
+    }
+  }
+}
+```
+
+- The above settings run the server in port 4000
 
 ### Production Environment
 - Update the `config/production.json` to have the following settings: 
 
 ```
-{
-  "server": {
-    "connections": {
-      "compression": true
-    },
-    "debug": {
-      "log": false,
-      "request": false
-    }
-  },
-  "connections": {
-    "default": {
-      "port": 8000
+{ 
+  "port": {
+    "web": {
+      "$default": 8000
     }
   }
 }
 ```
 
-- The above settings should disable server log errors, enable content encoding, and run the server in port 8000
-- The `server` key related configs are from hapi.js. More config options can be found here: http://hapijs.com/api
-- The `connections` key are electrode server specific: https://github.com/electrode-io/electrode-server/tree/master/lib/config
+- The above settings run the server in port 8000
 - Keys that exist in the `config/default.json` that are also in the other environment configs will be replaced by the environment specific versions
 
 ### Confippet Require
-- In Electrode, the configurations are loaded from `server/index.js` at this line: 
+- Add the following in `config.js`: 
 
 ```
 const config = require("electrode-confippet").config;
-const staticPathsDecor = require("electrode-static-paths");
-
-require("electrode-server")(config, [staticPathsDecor()]);
 ```
+
+- Remove the config variable from line 11. We will use confippet to load the config files instead. 
 
 ### Running Electrode app
 - Start the electrode app in `development` environment: 

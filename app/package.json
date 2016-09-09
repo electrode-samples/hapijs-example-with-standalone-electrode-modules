@@ -1,7 +1,7 @@
 {
-  "name": "app",
+  "name": "hapi-app-with-electrode-modules",
   "version": "1.0.0",
-  "description": "hapi app",
+  "description": "hapi app with electrode modules",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
@@ -12,7 +12,6 @@
     "type": "git",
     "url": ""
   },
-  "author": "raydecastro <captray108@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": ""
@@ -23,6 +22,7 @@
   },
   "dependencies": {
     "confidence": "3.x.x",
+    "electrode-confippet": "^1.5.0",
     "glue": "3.x.x",
     "hapi": "14.x.x",
     "hoek": "4.x.x",
