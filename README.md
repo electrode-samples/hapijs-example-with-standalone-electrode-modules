@@ -1,5 +1,5 @@
 # Hapi app with Electrode Modules
-- This repo is a sample Hapi app generated from `yo electrode` with Electrode modules
+- This repo is a sample Hapi app generated from `yo hapi-style:app` with Electrode modules
 
 ## Hapi Generator 
 - Scaffold a hapi app using the following commands: 
