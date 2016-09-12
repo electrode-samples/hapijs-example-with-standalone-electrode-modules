@@ -1,15 +1,44 @@
 # Hapi app with Electrode Modules
-- This repo is a sample Hapi app generated from `yo hapi-style:app` with Electrode modules
+- This repo is a sample Hapi app with Electrode modules
 
-## Hapi Generator 
-- Scaffold a hapi app using the following commands: 
+## Hapi Server 
+- Create a hapi app using the following commands: 
 
 ```
-npm install -g yo
-npm install -g generator-hapi-style
-yo hapi-style:app app
-cd app
-npm install
+mkdir hapiApp
+cd hapiApp
+npm init
+npm install hapi --save
+```
+
+- Create a `server.js` file using this code: 
+
+```
+'use strict';
+
+const Hapi = require('hapi');
+const server = new Hapi.Server();
+const config = {
+  connection: {
+    port: 3000
+  }
+};
+
+server.connection(config.connection);
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: function (request, reply) {
+        reply('Hapijs Server Running...');
+    }
+});
+
+server.start((error) => {
+    if (error) {
+        throw error;
+    }
+    console.log(`hapijs server running @ ${server.info.uri}`);
+});
 ```
 
 ## Electrode Confippet
@@ -40,15 +69,9 @@ config
 - Update the `config/default.json` to have the following settings: 
 
 ```
-{ 
-  "$meta": "This file configures the plot device.",
-  "projectName": "app",
-  "port": {
-    "web": {
-      "$filter": "env",
-      "test": 9090,
-      "$default": 8080
-    }
+{
+  "connection": {
+    "port": 3000
   }
 }
 ```
@@ -57,11 +80,9 @@ config
 - Update the `config/development.json` to have the following settings: 
 
 ```
-{ 
-  "port": {
-    "web": {
-      "$default": 4000
-    }
+{
+  "connection": {
+    "port": 4000
   }
 }
 ```
@@ -72,11 +93,9 @@ config
 - Update the `config/production.json` to have the following settings: 
 
 ```
-{ 
-  "port": {
-    "web": {
-      "$default": 8000
-    }
+{
+  "connection": {
+    "port": 8000
   }
 }
 ```
@@ -85,25 +104,23 @@ config
 - Keys that exist in the `config/default.json` that are also in the other environment configs will be replaced by the environment specific versions
 
 ### Confippet Require
-- Add the following in `config.js`: 
+- Replace the config line in line 5 with the following in `server.js`: 
 
 ```
 const config = require("electrode-confippet").config;
 ```
 
-- Remove the config variable from line 11. We will use confippet to load the config files instead. 
-
 ### Running Electrode app
 - Start the electrode app in `development` environment: 
 
 ```
-NODE_ENV=development gulp hot
+NODE_ENV=development npm start
 ```
 
 - Start the electrode app in `production` environment: 
 
 ```
-NODE_ENV=production gulp hot
+NODE_ENV=production npm start
 ```
 
 - Running in the selected environment should load the appropriate configuration settings
