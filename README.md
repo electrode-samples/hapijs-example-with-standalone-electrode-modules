@@ -1,7 +1,8 @@
-# Hapi app with Electrode Modules
-- This repo is a sample Hapi app with Electrode modules
+# Hapijs app with Electrode Modules
+- This repo is a sample Hapijs app with Electrode modules
+- You can clone the repo and `npm install` + `NODE_ENV=development npm start` or follow along with the instructions to build it from scratch
 
-## Hapi Server 
+## Hapijs Server 
 - Create a hapi app using the following commands: 
 
 ```
@@ -42,7 +43,7 @@ server.start((error) => {
 ```
 
 ## Electrode Confippet
-- Confippet is a standalone module that can be used w/o other parts of electrode
+-  [Confippet](https://github.com/electrode-io/electrode-confippet) is a versatile utility for managing your NodeJS application configuration. Its goal is customization and extensibility, but offers a preset config out of the box.
 
 ```
 npm install electrode-confippet --save
