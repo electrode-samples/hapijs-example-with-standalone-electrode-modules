@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "electrode-confippet": "^1.5.0",
+    "electrode-csrf-jwt": "^3.0.1",
     "hapi": "^15.0.3"
   }
 }

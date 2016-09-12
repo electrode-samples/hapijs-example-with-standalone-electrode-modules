@@ -1,5 +1,11 @@
 {
   "connection": {
     "port": 3000
+  },
+  "csrf": {
+    "options": {
+      "secret": "add-super-secret-code-here",
+      "expiresIn": 60
+    }
   }
 }
