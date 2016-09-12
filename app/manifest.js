@@ -1,8 +1,8 @@
 'use strict';
 
 const Confidence = require('confidence');
-const Config = require('./config');
 
+const config = require('electrode-confippet').config;
 
 const criteria = {
     env: process.env.NODE_ENV
@@ -22,7 +22,7 @@ const manifest = {
         }
     },
     connections: [{
-        port: Config.get('/port/web'),
+        port: config.$('port.web'),
         labels: ['web']
     }],
     registrations: [

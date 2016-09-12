@@ -2,7 +2,7 @@
 
 const Lab = require('lab');
 const Code = require('code');
-const Config = require('../../../config');
+const config = require('electrode-confippet').config;
 const Hapi = require('hapi');
 const IndexPlugin = require('../../../server/api/index');
 
@@ -16,7 +16,7 @@ lab.beforeEach((done) => {
 
     const plugins = [IndexPlugin];
     server = new Hapi.Server();
-    server.connection({ port: Config.get('/port/web') });
+    server.connection({ port: config.$('port.web') });
     server.register(plugins, (err) => {
 
         if (err) {
