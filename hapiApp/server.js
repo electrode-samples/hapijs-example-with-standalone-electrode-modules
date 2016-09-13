@@ -4,13 +4,13 @@ const Hapi = require('hapi');
 const Path = require('path');
 const Inert = require('inert');
 const server = new Hapi.Server({
-    connections: {
-        routes: {
-            files: {
-                relativeTo: Path.join(__dirname, 'public')
-            }
-        }
+  connections: {
+    routes: {
+      files: {
+        relativeTo: Path.join(__dirname, 'public')
+      }
     }
+  }
 });
 const config = require("electrode-confippet").config;
 const csrfPlugin = require("electrode-csrf-jwt").register;
@@ -18,27 +18,26 @@ const csrfPlugin = require("electrode-csrf-jwt").register;
 server.connection(config.connection);
 
 server.register({
-        register: csrfPlugin,
-        options: config.csrf.options
-    },
-    (error) => {
-        if (error) {
-            throw error;
-        }
-    });
+  register: csrfPlugin,
+  options: config.csrf.options
+}, (error) => {
+  if (error) {
+    throw error;
+  }
+});
 
 server.register(Inert, () => {});
 
 server.route({
-    method: 'GET',
-    path: '/{param*}',
-    handler: {
-        directory: {
-            path: '.',
-            redirectToSlash: true,
-            index: true
-        }
+  method: 'GET',
+  path: '/{param*}',
+  handler: {
+    directory: {
+      path: '.',
+      redirectToSlash: true,
+      index: true
     }
+  }
 });
 
 server.route({
@@ -50,23 +49,23 @@ server.route({
 });
 
 server.route({
-    method: 'GET',
-    path: '/1',
-    handler: function (request, reply) {
-        reply('valid');
-    }
+  method: 'GET',
+  path: '/1',
+  handler: function (request, reply) {
+    reply('valid');
+  }
 });
 
 server.route({
-    method: 'POST',
-    path: '/2',
-    handler: function (request, reply) {
-        reply('valid');
-    }
+  method: 'POST',
+  path: '/2',
+  handler: function (request, reply) {
+    reply('valid');
+  }
 });
 
 server.state('x-csrf-jwt', {
-    isSecure: false
+  isSecure: false
 });
 
 server.start((error) => {

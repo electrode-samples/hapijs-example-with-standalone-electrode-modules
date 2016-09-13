@@ -199,6 +199,7 @@ npm install electrode-csrf-jwt --save
 
 ```
 const server = new Hapi.Server();
+
 const csrfPlugin = require("electrode-csrf-jwt").register;
 
 server.register({ 
