@@ -44,7 +44,7 @@ const server = new Hapi.Server({
       }
     }
   }
-}););
+});
 const config = {
   connection: {
     port: 3000
