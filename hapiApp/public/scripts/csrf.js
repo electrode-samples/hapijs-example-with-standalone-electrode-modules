@@ -1,3 +1,5 @@
+"use strict";
+
 console.log("working");
 
 function doPOST(csrfHeader, shouldFail, resultId) {
@@ -14,12 +16,14 @@ function doPOST(csrfHeader, shouldFail, resultId) {
     contentType: 'application/json',
     url: '/2',
     success: function (data, textStatus, xhr) {
-      var msg = 'POST SUCCEEDED with status ' + xhr.status + ' ' + (shouldFail ? 'but expected error' : 'as expected');
+      let msg = 'POST SUCCEEDED with status ' + xhr.status + 
+        ' ' + (shouldFail ? 'but expected error' : 'as expected');
       console.log(msg);
       $(resultId).html('<p>' + msg + '</p>');
     },
     error: function (xhr, textStatus, error) {
-      var msg = 'POST FAILED with status ' + xhr.status + ' ' + (shouldFail ? 'as expected' : 'but expected success');
+      let msg = 'POST FAILED with status ' + xhr.status + 
+        ' ' + (shouldFail ? 'as expected' : 'but expected success');
       console.log(msg);
       $(resultId).html('<p>' + msg + '</p>');
     }
@@ -38,11 +42,11 @@ $(function () {
       },
       success: function (data, textStatus, xhr) {
         console.log('GET: success');
-        var csrfHeader = xhr.getResponseHeader('x-csrf-jwt');
+        let csrfHeader = xhr.getResponseHeader('x-csrf-jwt');
         if (csrfHeader != '') {
           console.log('> Got x-csrf-jwt token OK\n');
         }
-        var csrfCookie = Cookies.get('x-csrf-jwt');
+        let csrfCookie = Cookies.get('x-csrf-jwt');
         if (csrfCookie != '') {
           console.log('> Got x-csrf-jwt cookie OK\n');
         }
@@ -57,5 +61,4 @@ $(function () {
     console.log('test-invalid-link clicked');
     doPOST('fake', true, '#test-results');
   });
-
 }); 

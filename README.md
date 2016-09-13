@@ -1,8 +1,23 @@
 # Hapijs app with Electrode Modules
-- This repo is a sample Hapijs app with Electrode modules
-- You can clone the repo and `npm install` + `NODE_ENV=development npm start` or follow along with the instructions to build it from scratch
+- This repo is a sample Hapijs app with the following Electrode modules:
+  - [Electrode Confippet](https://github.com/electrode-io/electrode-confippet)
+  - [Electrode CSRF JWT](https://github.com/electrode-io/electrode-csrf-jwt) 
 
-## Hapijs Server 
+## Usage
+```
+git clone https://github.com/electrode-io/hapijs-example-with-standalone-electrode-modules.git
+cd hapiApp
+npm install 
+NODE_ENV=development npm start
+```
+
+## Instructions
+- You can build the app from scratch by following the instructions below: 
+  - [Hapijs Server](#hapijs-server)
+  - [Electrode Confippet](#electrode-confippet)
+  - [Electrode CSRF JWT](#electrode-csrf-jwt)
+
+## <a name="hapijs-server"></a>Hapijs Server
 - Create a hapi app using the following commands: 
 
 ```
@@ -40,15 +55,15 @@ const config = {
 server.connection(config.connection);
 server.register(Inert, () => {});
 server.route({
-    method: 'GET',
-    path: '/{param*}',
-    handler: {
-        directory: {
-            path: '.',
-            redirectToSlash: true,
-            index: true
-        }
+  method: 'GET',
+  path: '/{param*}',
+  handler: {
+    directory: {
+      path: '.',
+      redirectToSlash: true,
+      index: true
     }
+  }
 });
 server.route({
   method: 'GET',
@@ -66,7 +81,7 @@ server.start((error) => {
 });
 ```
 
-## Electrode Confippet
+## <a name="electrode-confippet"></a>Electrode Confippet
 -  [Confippet](https://github.com/electrode-io/electrode-confippet) is a versatile utility for managing your NodeJS application configuration. Its goal is customization and extensibility, but offers a preset config out of the box.
 
 ### Install
@@ -154,8 +169,8 @@ NODE_ENV=production npm start
 
 - Running in the selected environment should load the appropriate configuration settings
 
-## Electrode CSRF JWT
-- [CSRF-JWT](https://github.com/electrode-io/electrode-csrf-jwt) is a Hapijs plugin that allows you to authenticate HTTP requests using JWT in your Hapijs applications.
+## <a name="electrode-csrf-jwt"></a>Electrode CSRF JWT
+- [electrode-csrf-jwt](https://github.com/electrode-io/electrode-csrf-jwt) is an Express middleware / Hapi plugin that allows you to authenticate HTTP requests using JWT in your Express or Hapi applications.
 
 ### Install
 - Run the following commands: 
@@ -187,14 +202,13 @@ const server = new Hapi.Server();
 const csrfPlugin = require("electrode-csrf-jwt").register;
 
 server.register({ 
-        register: csrfPlugin, 
-        options: config.csrf.options 
-    }, 
-    (error) => {
-        if (error) {
-            throw error;
-        }
-    });
+  register: csrfPlugin, 
+  options: config.csrf.options 
+}, (error) => {
+  if (error) {
+    throw error;
+  }
+});
 ```
 
 ### Test
@@ -202,9 +216,12 @@ server.register({
 - Add the file: `public/scripts/csrf.js`: 
 
 ```
+"use strict";
+
 console.log("working");
 
 function doPOST(csrfHeader, shouldFail, resultId) {
+  console.log('.love> '+ csrfHeader);
   $.ajax({
     type: 'POST',
     data: JSON.stringify({ message: "hello" }),
@@ -217,12 +234,14 @@ function doPOST(csrfHeader, shouldFail, resultId) {
     contentType: 'application/json',
     url: '/2',
     success: function (data, textStatus, xhr) {
-      var msg = 'POST SUCCEEDED with status ' + xhr.status + ' ' + (shouldFail ? 'but expected error' : 'as expected');
+      let msg = 'POST SUCCEEDED with status ' + xhr.status + 
+        ' ' + (shouldFail ? 'but expected error' : 'as expected');
       console.log(msg);
       $(resultId).html('<p>' + msg + '</p>');
     },
     error: function (xhr, textStatus, error) {
-      var msg = 'POST FAILED with status ' + xhr.status + ' ' + (shouldFail ? 'as expected' : 'but expected success');
+      let msg = 'POST FAILED with status ' + xhr.status + 
+        ' ' + (shouldFail ? 'as expected' : 'but expected success');
       console.log(msg);
       $(resultId).html('<p>' + msg + '</p>');
     }
@@ -241,11 +260,11 @@ $(function () {
       },
       success: function (data, textStatus, xhr) {
         console.log('GET: success');
-        var csrfHeader = xhr.getResponseHeader('x-csrf-jwt');
+        let csrfHeader = xhr.getResponseHeader('x-csrf-jwt');
         if (csrfHeader != '') {
           console.log('> Got x-csrf-jwt token OK\n');
         }
-        var csrfCookie = Cookies.get('x-csrf-jwt');
+        let csrfCookie = Cookies.get('x-csrf-jwt');
         if (csrfCookie != '') {
           console.log('> Got x-csrf-jwt cookie OK\n');
         }
@@ -260,13 +279,12 @@ $(function () {
     console.log('test-invalid-link clicked');
     doPOST('fake', true, '#test-results');
   });
-
-});  
+}); 
 ```
 
 - Add the file: `public/csrf.html`: 
 
-```
+```html
 <!doctype html>
 <html>
 
@@ -311,15 +329,15 @@ server.route({
 });
 
 server.route({
-    method: 'POST',
-    path: '/2',
-    handler: function (request, reply) {
-        reply('valid');
-    }
+  method: 'POST',
+  path: '/2',
+  handler: function (request, reply) {
+    reply('valid');
+  }
 });
 
 server.state('x-csrf-jwt', {
-    isSecure: false
+  isSecure: false
 });
 ```
 

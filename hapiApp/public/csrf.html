@@ -9,11 +9,12 @@
 
 <body>
   <h1>CSRF Protection Demo</h1>
-  <p>This page demonstrates usage of the <a href="https://github.com/electrode-io/electrode-csrf-jwt">electrode-csrf-jwt</a>    module. Two endpoints are declared in <code>app.js</code>:
+  <p>This page demonstrates usage of the <a href="https://github.com/electrode-io/electrode-csrf-jwt">electrode-csrf-jwt</a> module. Two endpoints are declared in <code>app.js</code>:
     <ul>
       <li>a GET endpoint, <code>/1</code>, to which the module automatically adds a csrf token header</li>
       <li>a POST endpoint, <code>/2</code>, to which the module automatically ensures the presence of a valid token in the request
-        headers</li>
+        headers
+      </li>
     </ul>
   </p>
   <p>Two simple tests via AJAX (JavaScript must be enabled) are demonstrated below:</p>
