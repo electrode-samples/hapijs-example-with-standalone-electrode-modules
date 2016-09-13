@@ -147,7 +147,7 @@ config
 - Keys that exist in the `config/default.json` that are also in the other environment configs will be replaced by the environment specific versions
 
 ### Require
-- Replace the config line in with the following in `server.js`: 
+- Replace the config line with the following in `server.js`: 
 
 ```
 const config = require("electrode-confippet").config;
