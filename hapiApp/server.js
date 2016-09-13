@@ -27,7 +27,19 @@ server.register({
         }
     });
 
-server.register(Inert, () => { });
+server.register(Inert, () => {});
+
+server.route({
+    method: 'GET',
+    path: '/{param*}',
+    handler: {
+        directory: {
+            path: '.',
+            redirectToSlash: true,
+            index: true
+        }
+    }
+});
 
 server.route({
     method: 'GET',
@@ -53,16 +65,8 @@ server.route({
     }
 });
 
-server.route({
-    method: 'GET',
-    path: '/{param*}',
-    handler: {
-        directory: {
-            path: '.',
-            redirectToSlash: true,
-            index: true
-        }
-    }
+server.state('x-csrf-jwt', {
+    isSecure: false
 });
 
 server.start((error) => {

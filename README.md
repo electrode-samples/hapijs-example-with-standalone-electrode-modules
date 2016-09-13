@@ -317,6 +317,10 @@ server.route({
         reply('valid');
     }
 });
+
+server.state('x-csrf-jwt', {
+    isSecure: false
+});
 ```
 
 ### Run
