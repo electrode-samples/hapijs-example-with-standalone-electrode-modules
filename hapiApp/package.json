@@ -12,7 +12,6 @@
     "electrode-confippet": "^1.5.0",
     "electrode-csrf-jwt": "^3.0.1",
     "hapi": "^15.0.3",
-    "inert": "^4.0.2",
-    "path": "^0.12.7"
+    "inert": "^4.0.2"
   }
 }

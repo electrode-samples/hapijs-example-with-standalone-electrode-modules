@@ -26,7 +26,6 @@ cd hapiApp
 npm init
 npm install hapi --save
 npm install inert --save
-npm install path --save
 ```
 
 - Create a `server.js` file using this code: 
