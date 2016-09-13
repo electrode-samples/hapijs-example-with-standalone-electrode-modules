@@ -198,6 +198,7 @@ server.register({
 ```
 
 ### Test
+- CSRF Protection demo
 - Add the file: `public/scripts/csrf.js`: 
 
 ```
