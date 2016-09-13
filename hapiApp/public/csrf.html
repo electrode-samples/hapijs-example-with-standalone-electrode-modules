@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+
+<head>
+  <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
+  <script src="/scripts/csrf.js"></script>
+</head>
+
+<body>
+  <h1>CSRF Protection Demo</h1>
+  <p>This page demonstrates usage of the <a href="https://github.com/electrode-io/electrode-csrf-jwt">electrode-csrf-jwt</a> module. Two endpoints are declared in <code>app.js</code>:
+    <ul>
+      <li>a GET endpoint, <code>/1</code>, to which the module automatically adds a csrf token header</li>
+      <li>a POST endpoint, <code>/2</code>, to which the module automatically ensures the presence of a valid token in the request
+        headers
+      </li>
+    </ul>
+  </p>
+  <p>Two simple tests via AJAX (JavaScript must be enabled) are demonstrated below:</p>
+  <ul>
+    <li><a id="test-valid-link" href="#">Test Valid POST</a> using a token retrieved from <code>/1</code> first (should succeed
+      with status 200)</li>
+    <li><a id="test-invalid-link" href="#">Test Invalid POST</a> using a forged token (should fail with status 500)</li>
+  </ul>
+  <div id="test-results"></div>
+</body>
+
+</html>
