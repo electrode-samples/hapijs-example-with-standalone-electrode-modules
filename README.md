@@ -18,66 +18,20 @@ NODE_ENV=development npm start
   - [Electrode CSRF JWT](#electrode-csrf-jwt)
 
 ## <a name="hapijs-server"></a>Hapijs Server
+- Let's use the [hapi-universal-redux](https://github.com/luandro/hapi-universal-redux) repo to scaffold our app. 
 - Create a hapi app using the following commands: 
 
-```
-mkdir hapiApp
+```bash
+git clone https://github.com/luandro/hapi-universal-redux.git hapiApp
 cd hapiApp
-npm init
-npm install hapi --save
-npm install inert --save
+npm install
 ```
 
-- Create a `server.js` file using this code: 
+- Run using the following:
 
-```
-'use strict';
-
-const Hapi = require('hapi');
-const Path = require('path');
-const Inert = require('inert');
-const server = new Hapi.Server({
-  connections: {
-    routes: {
-      files: {
-        relativeTo: Path.join(__dirname, 'public')
-      }
-    }
-  }
-});
-const config = {
-  connection: {
-    port: 3000
-  }
-};
-
-server.connection(config.connection);
-server.register(Inert, () => {});
-server.route({
-  method: 'GET',
-  path: '/{param*}',
-  handler: {
-    directory: {
-      path: '.',
-      redirectToSlash: true,
-      index: true
-    }
-  }
-});
-server.route({
-  method: 'GET',
-  path: '/',
-  handler: function (request, reply) {
-    reply('Hapijs Server Running...');
-  }
-});
-
-server.start((error) => {
-  if (error) {
-    throw error;
-  }
-  console.log(`hapijs server running @ ${server.info.uri}`);
-});
+```bash
+NODE_ENV=development npm run build
+NODE_ENV=development npm start
 ```
 
 ## <a name="electrode-confippet"></a>Electrode Confippet
@@ -92,7 +46,7 @@ npm install electrode-confippet --save
 ### Configure
 - Create the config folder: 
 
-```
+```bash
 mkdir config
 cd config
 ```
@@ -146,23 +100,31 @@ config
 - The above settings run the server in port 8000
 - Keys that exist in the `config/default.json` that are also in the other environment configs will be replaced by the environment specific versions
 
-### Require
-- Replace the config line with the following in `server.js`: 
+### Usage
+- Modify `hapiApp/src/server.js` with the following: 
 
+```javascript
+import { config } = from "electrode-confippet";
 ```
-const config = require("electrode-confippet").config;
+
+- Update the `port` variable: 
+
+```javascript
+const port = config.connection.port;
 ```
 
 ### Run
 - Start the hapijs app in `development` environment: 
 
-```
+```bash
+NODE_ENV=development npm run build
 NODE_ENV=development npm start
 ```
 
 - Start the hapijs app in `production` environment: 
 
 ```
+NODE_ENV=production npm run build
 NODE_ENV=production npm start
 ```
 
@@ -182,7 +144,7 @@ npm install electrode-csrf-jwt --save
 ### Configure
 - Add the following to `config/default.json`: 
 
-```
+```json
 {
   "csrf": {
     "options": {
@@ -193,13 +155,11 @@ npm install electrode-csrf-jwt --save
 }
 ```
 
-### Require
-- Add the following to `server.js`: 
+### Usage
+- Modify `hapiApp/src/server.js` with the following: 
 
-```
-const server = new Hapi.Server();
-
-const csrfPlugin = require("electrode-csrf-jwt").register;
+```javascript
+import { register as csrfPlugin } from "electrode-csrf-jwt";
 
 server.register({ 
   register: csrfPlugin, 
@@ -209,123 +169,13 @@ server.register({
     throw error;
   }
 });
-```
 
-### Test
-- CSRF Protection demo
-- Add the file: `public/scripts/csrf.js`: 
-
-```
-"use strict";
-
-console.log("working");
-
-function doPOST(csrfHeader, shouldFail, resultId) {
-  console.log('.love> '+ csrfHeader);
-  $.ajax({
-    type: 'POST',
-    data: JSON.stringify({ message: "hello" }),
-    headers: {
-      "x-csrf-jwt": csrfHeader
-    },
-    xhrFields: {
-      withCredentials: true
-    },
-    contentType: 'application/json',
-    url: '/2',
-    success: function (data, textStatus, xhr) {
-      let msg = 'POST SUCCEEDED with status ' + xhr.status + 
-        ' ' + (shouldFail ? 'but expected error' : 'as expected');
-      console.log(msg);
-      $(resultId).html('<p>' + msg + '</p>');
-    },
-    error: function (xhr, textStatus, error) {
-      let msg = 'POST FAILED with status ' + xhr.status + 
-        ' ' + (shouldFail ? 'as expected' : 'but expected success');
-      console.log(msg);
-      $(resultId).html('<p>' + msg + '</p>');
-    }
-  });
-}
-
-$(function () {
-  $('#test-valid-link').click(function (e) {
-    e.preventDefault();
-    console.log('test-valid-link clicked');
-    $.ajax({
-      type: 'GET',
-      url: '/1',
-      xhrFields: {
-        withCredentials: true
-      },
-      success: function (data, textStatus, xhr) {
-        console.log('GET: success');
-        let csrfHeader = xhr.getResponseHeader('x-csrf-jwt');
-        if (csrfHeader != '') {
-          console.log('> Got x-csrf-jwt token OK\n');
-        }
-        let csrfCookie = Cookies.get('x-csrf-jwt');
-        if (csrfCookie != '') {
-          console.log('> Got x-csrf-jwt cookie OK\n');
-        }
-
-        doPOST(csrfHeader, false, '#test-results');
-      }
-    });
-  });
-
-  $('#test-invalid-link').click(function (e) {
-    e.preventDefault();
-    console.log('test-invalid-link clicked');
-    doPOST('fake', true, '#test-results');
-  });
-}); 
-```
-
-- Add the file: `public/csrf.html`: 
-
-```html
-<!doctype html>
-<html>
-
-<head>
-  <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"></script>
-  <script src="/scripts/csrf.js"></script>
-</head>
-
-<body>
-  <h1>CSRF Protection Demo</h1>
-  <p>This page demonstrates usage of the 
-    <a href="https://github.com/electrode-io/electrode-csrf-jwt">electrode-csrf-jwt</a> 
-    module. Two endpoints are declared in <code>app.js</code>:
-    <ul>
-      <li>a GET endpoint, <code>/1</code>, to which the module automatically adds a csrf token header</li>
-      <li>a POST endpoint, <code>/2</code>, to which the module automatically ensures the presence of a valid token in the request
-        headers</li>
-    </ul>
-  </p>
-  <p>Two simple tests via AJAX (JavaScript must be enabled) are demonstrated below:</p>
-  <ul>
-    <li><a id="test-valid-link" href="#">Test Valid POST</a> using a token retrieved from <code>/1</code> first (should succeed
-      with status 200)</li>
-    <li><a id="test-invalid-link" href="#">Test Invalid POST</a> using a forged token (should fail with status 500)</li>
-  </ul>
-  <div id="test-results"></div>
-</body>
-
-</html>
-```
-
-- Update `server.js` with the following: 
-
-```
 server.route({
-    method: 'GET',
-    path: '/1',
-    handler: function (request, reply) {
-        reply('valid');
-    }
+  method: 'GET',
+  path: '/1',
+  handler: function (request, reply) {
+    reply('valid');
+  }
 });
 
 server.route({
@@ -341,11 +191,124 @@ server.state('x-csrf-jwt', {
 });
 ```
 
+### Test
+- CSRF Protection demo
+- Let's add some sample code to demo the CSRF feature 
+- Add the file: `hapiApp/src/components/csrf.js`: 
+
+```javascript
+import React from "react";
+
+export default class CSRF extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      testResult: ""
+    };
+    this.testValid = this.testValid.bind(this);
+    this.testInvalid = this.testInvalid.bind(this);
+  }
+
+  doPost(csrfToken) {
+    fetch("/2", {
+      credentials: "same-origin",
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "x-csrf-jwt": csrfToken
+      },
+      body: JSON.stringify({message: "hello"})
+    })
+    .then((resp) => {
+      if (resp.status === "200") {
+        this.setState({testResult: `POST SUCCEEDED with status ${resp.status}` });
+      } else {
+        this.setState({testResult: `POST FAILED with status ${resp.status}` });
+      }
+
+    })
+    .catch((e) => {
+      this.setState({testResult: `POST FAILED: ${e.toString()}`});
+    });
+  }
+
+  testValid() {
+    this.setState({testResult: "valid"});
+    fetch("/1", {credentials: "same-origin"}) // eslint-disable-line
+    .then((resp) => {
+      if (resp.status === "200") {
+        const token = resp.headers.get("x-csrf-jwt");
+        if (token !== "") {
+          console.log("Got CSRF token OK"); // eslint-disable-line
+          this.doPost(token, false);
+        } else {
+          this.setState({testResult: "Unable to get token from GET request"});
+        }
+      } else {
+        this.setState({testResult: `GET request returned ${resp.status}`});
+      }
+    })
+    .catch((e) => {
+      this.setState({testResult: e.toString()});
+    });
+  }
+
+  testInvalid() {
+    this.doPost("fake", true);
+  }
+
+  render() {
+    const text = this.state.testResult;
+    return (
+      <div>
+        <h1>Electrode CSRF-JWT Demo</h1>
+        <p>This component demonstrates usage of the
+          <a href="https://github.com/electrode-io/electrode-csrf-jwt"> electrode-csrf-jwt </a>
+          module. Two endpoints are declared in <code>server/plugins/demo.js</code>:</p>
+        <ul>
+          <li>a GET endpoint, <code>/1</code>, to which the module
+            automatically adds a csrf token header</li>
+          <li>a POST endpoint, <code>/2</code>, to which the module
+            automatically ensures the presence of a valid token in the request headers</li>
+        </ul>
+        <p>Two simple tests via AJAX (JavaScript must be enabled) are demonstrated below:</p>
+        <ul>
+          <li><a href="#" onClick={this.testValid}>Test Valid POST</a> using a token
+            retrieved from <code>/1</code> first (should succeed with a 200 status)</li>
+          <li><a href="#" onClick={this.testInvalid}>Test Invalid POST </a>
+           using a forged token (should fail with a 400 status)</li>
+        </ul>
+        <div>
+          {text}
+        </div>
+      </div>
+    );
+  }
+}
+```
+
+- Add the following to `hapiApp/src/routes.js`: 
+
+```javascript
+import CSRF from './components/csrf';
+
+<Route path="/csrf" component={CSRF} />
+```
+
+- Add the following to `hapiApp/src/components/Header.js`: 
+
+```html
+<li style={styles.list}><Link style={styles.navLink}  to="/csrf" activeClassName="active">CSRF</Link></li>
+```
+
 ### Run
 - Start the hapijs app in `development` environment: 
 
 ```
+NODE_ENV=development npm run build
 NODE_ENV=development npm start
 ```
 
-- Navigate to `http://localhost:4000/csrf.html` to test the CSRF features
+- Navigate to `http://localhost:4000/csrf` to test the CSRF features
