@@ -1,6 +1,6 @@
 import React from "react";
 
-export class CSRF extends React.Component {
+export default class CSRF extends React.Component {
 
   constructor() {
     super();
