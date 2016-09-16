@@ -3,13 +3,27 @@
   - [Electrode Confippet](https://github.com/electrode-io/electrode-confippet)
   - [Electrode CSRF JWT](https://github.com/electrode-io/electrode-csrf-jwt) 
 
-## Usage
+## Install
 ```
 git clone https://github.com/electrode-io/hapijs-example-with-standalone-electrode-modules.git
 cd hapiApp
-npm install 
+npm install
+```
+
+## Run
+- Start the electrode app in `development` environment:
+
+```bash
 NODE_ENV=development npm start
 ```
+
+- Start the electrode app in `production` environment:
+
+```bash
+NODE_ENV=production npm start
+```
+
+---
 
 ## Instructions
 - You can build the app from scratch by following the instructions below: 
@@ -18,6 +32,8 @@ NODE_ENV=development npm start
   - [Electrode CSRF JWT](#electrode-csrf-jwt)
 
 ## <a name="hapijs-server"></a>Hapijs Server
+
+### Install
 - Create a hapi app using the following commands: 
 
 ```
@@ -28,6 +44,7 @@ npm install hapi --save
 npm install inert --save
 ```
 
+### Server
 - Create a `server.js` file using this code: 
 
 ```
@@ -146,7 +163,7 @@ config
 - The above settings run the server in port 8000
 - Keys that exist in the `config/default.json` that are also in the other environment configs will be replaced by the environment specific versions
 
-### Require
+### Usage
 - Replace the config line with the following in `server.js`: 
 
 ```
@@ -167,6 +184,8 @@ NODE_ENV=production npm start
 ```
 
 - Running in the selected environment should load the appropriate configuration settings
+
+---
 
 ## <a name="electrode-csrf-jwt"></a>Electrode CSRF JWT
 - [electrode-csrf-jwt](https://github.com/electrode-io/electrode-csrf-jwt) is an Express middleware / Hapi plugin that allows you to authenticate HTTP requests using JWT in your Express or Hapi applications.
@@ -193,7 +212,7 @@ npm install electrode-csrf-jwt --save
 }
 ```
 
-### Require
+### Usage
 - Add the following to `server.js`: 
 
 ```
@@ -213,6 +232,7 @@ server.register({
 
 ### Test
 - CSRF Protection demo
+- Let's add some code to verify CSRF
 - Add the file: `public/scripts/csrf.js`: 
 
 ```
