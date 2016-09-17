@@ -5,7 +5,7 @@
 
 ## Install
 ```
-git clone https://github.com/electrode-io/hapijs-example-with-standalone-electrode-modules.git
+git clone https://github.com/docs-code-examples-electrode-io/hapijs-example-with-standalone-electrode-modules.git
 cd hapiApp
 npm install
 ```
