@@ -44,7 +44,7 @@ server.route({
   method: 'GET',
   path: '/',
   handler: function (request, reply) {
-    reply('Hapijs Server Running...');
+    reply.file('index.html');
   }
 });
 
