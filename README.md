@@ -1,7 +1,7 @@
 # Hapijs app with Electrode Modules
 - This repo is a sample Hapijs app with the following Electrode modules:
   - [Electrode Confippet](https://github.com/electrode-io/electrode-confippet)
-  - [Electrode CSRF JWT](https://github.com/electrode-io/electrode-csrf-jwt) 
+  - [Electrode CSRF JWT](https://github.com/electrode-io/electrode-csrf-jwt)
 
 ## Install
 ```
@@ -26,7 +26,7 @@ NODE_ENV=production npm start
 ---
 
 ## Instructions
-- You can build the app from scratch by following the instructions below: 
+- You can build the app from scratch by following the instructions below:
   - [Hapijs Server](#hapijs-server)
   - [Electrode Confippet](#electrode-confippet)
   - [Electrode CSRF JWT](#electrode-csrf-jwt)
@@ -34,7 +34,7 @@ NODE_ENV=production npm start
 ## <a name="hapijs-server"></a>Hapijs Server
 
 ### Install
-- Create a hapi app using the following commands: 
+- Create a hapi app using the following commands:
 
 ```
 mkdir hapiApp
@@ -45,7 +45,7 @@ npm install inert --save
 ```
 
 ### Server
-- Create a `server.js` file using this code: 
+- Create a `server.js` file using this code:
 
 ```
 'use strict';
@@ -107,14 +107,14 @@ npm install electrode-confippet --save
 ```
 
 ### Configure
-- Create the config folder: 
+- Create the config folder:
 
 ```
 mkdir config
 cd config
 ```
 
-- Add the following config files: 
+- Add the following config files:
 
 ```
 config
@@ -123,10 +123,10 @@ config
 |_ production.json
 ```
 
-- Add your configuration settings 
+- Add your configuration settings
 
 #### Default
-- Update the `config/default.json` to have the following settings: 
+- Update the `config/default.json` to have the following settings:
 
 ```
 {
@@ -137,7 +137,7 @@ config
 ```
 
 #### Development environment
-- Update the `config/development.json` to have the following settings: 
+- Update the `config/development.json` to have the following settings:
 
 ```
 {
@@ -150,7 +150,7 @@ config
 - The above settings run the server in port 4000
 
 #### Production environment
-- Update the `config/production.json` to have the following settings: 
+- Update the `config/production.json` to have the following settings:
 
 ```
 {
@@ -164,20 +164,20 @@ config
 - Keys that exist in the `config/default.json` that are also in the other environment configs will be replaced by the environment specific versions
 
 ### Usage
-- Replace the config line with the following in `server.js`: 
+- Replace the config line with the following in `server.js`:
 
 ```
 const config = require("electrode-confippet").config;
 ```
 
 ### Run
-- Start the hapijs app in `development` environment: 
+- Start the hapijs app in `development` environment:
 
 ```
 NODE_ENV=development npm start
 ```
 
-- Start the hapijs app in `production` environment: 
+- Start the hapijs app in `production` environment:
 
 ```
 NODE_ENV=production npm start
@@ -191,7 +191,7 @@ NODE_ENV=production npm start
 - [electrode-csrf-jwt](https://github.com/electrode-io/electrode-csrf-jwt) is an Express middleware / Hapi plugin that allows you to authenticate HTTP requests using JWT in your Express or Hapi applications.
 
 ### Install
-- Run the following commands: 
+- Run the following commands:
 
 ```
 cd hapiApp
@@ -199,7 +199,7 @@ npm install electrode-csrf-jwt --save
 ```
 
 ### Configure
-- Add the following to `config/default.json`: 
+- Add the following to `config/default.json`:
 
 ```
 {
@@ -213,16 +213,16 @@ npm install electrode-csrf-jwt --save
 ```
 
 ### Usage
-- Add the following to `server.js`: 
+- Add the following to `server.js`:
 
 ```
 const server = new Hapi.Server();
 
 const csrfPlugin = require("electrode-csrf-jwt").register;
 
-server.register({ 
-  register: csrfPlugin, 
-  options: config.csrf.options 
+server.register({
+  register: csrfPlugin,
+  options: config.csrf.options
 }, (error) => {
   if (error) {
     throw error;
@@ -233,7 +233,7 @@ server.register({
 ### Test
 - CSRF Protection demo
 - Let's add some code to verify CSRF
-- Add the file: `public/scripts/csrf.js`: 
+- Add the file: `public/scripts/csrf.js`:
 
 ```
 "use strict";
@@ -254,13 +254,13 @@ function doPOST(csrfHeader, shouldFail, resultId) {
     contentType: 'application/json',
     url: '/2',
     success: function (data, textStatus, xhr) {
-      let msg = 'POST SUCCEEDED with status ' + xhr.status + 
+      let msg = 'POST SUCCEEDED with status ' + xhr.status +
         ' ' + (shouldFail ? 'but expected error' : 'as expected');
       console.log(msg);
       $(resultId).html('<p>' + msg + '</p>');
     },
     error: function (xhr, textStatus, error) {
-      let msg = 'POST FAILED with status ' + xhr.status + 
+      let msg = 'POST FAILED with status ' + xhr.status +
         ' ' + (shouldFail ? 'as expected' : 'but expected success');
       console.log(msg);
       $(resultId).html('<p>' + msg + '</p>');
@@ -299,10 +299,10 @@ $(function () {
     console.log('test-invalid-link clicked');
     doPOST('fake', true, '#test-results');
   });
-}); 
+});
 ```
 
-- Add the file: `public/csrf.html`: 
+- Add the file: `public/csrf.html`:
 
 ```html
 <!doctype html>
@@ -316,8 +316,8 @@ $(function () {
 
 <body>
   <h1>CSRF Protection Demo</h1>
-  <p>This page demonstrates usage of the 
-    <a href="https://github.com/electrode-io/electrode-csrf-jwt">electrode-csrf-jwt</a> 
+  <p>This page demonstrates usage of the
+    <a href="https://github.com/electrode-io/electrode-csrf-jwt">electrode-csrf-jwt</a>
     module. Two endpoints are declared in <code>app.js</code>:
     <ul>
       <li>a GET endpoint, <code>/1</code>, to which the module automatically adds a csrf token header</li>
@@ -337,7 +337,7 @@ $(function () {
 </html>
 ```
 
-- Update `server.js` with the following: 
+- Update `server.js` with the following:
 
 ```
 server.route({
@@ -362,10 +362,12 @@ server.state('x-csrf-jwt', {
 ```
 
 ### Run
-- Start the hapijs app in `development` environment: 
+- Start the hapijs app in `development` environment:
 
 ```
 NODE_ENV=development npm start
 ```
 
 - Navigate to `http://localhost:4000/csrf.html` to test the CSRF features
+
+Built with :heart: by [Team Electrode](https://github.com/orgs/electrode-io/people) @WalmartLabs.
